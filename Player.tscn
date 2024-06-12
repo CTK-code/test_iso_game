@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjah0evhx3cd7"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_oy52u"]
+[ext_resource type="Texture2D" uid="uid://bb3o88nee1w44" path="res://Character(s)/Marche2 (SE).png" id="2_gutmc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ms3jk"]
+size = Vector2(28, 62)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bao2g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_gutmc")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_oy52u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+scale = Vector2(0.6, 0.6)
+shape = SubResource("RectangleShape2D_ms3jk")
+
+[node name="Marche2(se)" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -15)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_gutmc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -12)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_bao2g")
+animation = &"Idle"
