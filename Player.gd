@@ -9,8 +9,20 @@ var initial_position = global_position
 var end_position = global_position
 var can_input = true
 
+var astar_grid: AStarGrid2D
+
+func _ready():
+	astar_grid = AStarGrid2D.new()
+	astar_grid.region = tile_map.get_used_rect()
+	astar_grid.cell_size = Vector2(32, 16)
+	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
+	astar_grid.update()
+	global_position = Vector2(0,0)
+	
+
 func _physics_process(delta):
 	#move(delta)
+	move_mouse_astar()
 	move_mouse(delta)
 	move_and_slide()
 	
@@ -48,6 +60,14 @@ func move_mouse(delta: float):
 	
 	if velocity.y == 0 && velocity.x == 0:
 		can_input = true
+
+func move_mouse_astar():
+	if Input.is_action_just_pressed("leftClick"):
+		var id_path = astar_grid.get_id_path(
+			tile_map.local_to_map(global_position),
+			tile_map.local_to_map(get_global_mouse_position())
+		).slice(1)
+		print(id_path)
 
 func move_tile(horizontal: Vector2, vertical: Vector2):
 	
