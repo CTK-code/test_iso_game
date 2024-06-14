@@ -144,42 +144,30 @@ script/source = "extends TileMap
 var grid_size: int = 20
 var dic = {}
 var selected_tile
+var last_mouse_position
 
 #for all tiles in the grid, assign dictionary values to each type (the type and the position) - needs more information on set_cell
 func _ready():
-	for x in grid_size:
-		for y in grid_size:
+	last_mouse_position = local_to_map(get_global_mouse_position())
+	for x in range(-1 * grid_size, grid_size):
+		for y in range(-1 * grid_size, grid_size):
 			dic[str(Vector2(x, y))] = {
 				\"Type\": \"Dirt\",
 				\"Position\": str(Vector2(x, y))
 			}
 			set_cell(0, Vector2(x, y), 0, Vector2i(0,0), 0)
 
-	#var astar = AStar2D.new()
-	#astar.add_point(1, Vector2(0, 0))
-	#astar.add_point(2, Vector2(0, 1), 1) # Default weight is 1
-	#astar.add_point(3, Vector2(1, 1))
-	#astar.add_point(4, Vector2(2, 0))
-#
-	#astar.connect_points(1, 2, false)
-	#astar.connect_points(2, 3, false)
-	#astar.connect_points(4, 3, false)
-	#astar.connect_points(1, 4, false)
-
-	#var res = astar.get_id_path(1, 3) # Returns [1, 2, 3]
-	#print(res)
 	
 			
 #create and set tile variable to the map coordinates the mouse is on. 
 #create and set selected_tile variable to the center of the tile on that map location
 func _process(_delta):
+
 	var tile = local_to_map(get_global_mouse_position())
 	selected_tile = map_to_local(tile)
-	
-	
-	for x in grid_size:
-		for y in grid_size:
-			erase_cell(1,Vector2(x, y))
+	if last_mouse_position != tile:
+		erase_cell(1, last_mouse_position)
+	last_mouse_position = tile
 	
 	
 	if dic.has(str(tile)):
